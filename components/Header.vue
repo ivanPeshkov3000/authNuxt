@@ -1,42 +1,30 @@
 <template lang="pug">
     v-app
         v-app-bar(
-            dense
+            extended
             flat
+            dark
+            src="https://i.picsum.photos/id/885/1920/1080.jpg?blur=2&grayscale&hmac=kfH8ExnZO6NCpKokwT_LWHk9oLtmd-4cEctUdxJEuss"
         )
-            v-col
-                .logo
-                    v-avatar(
-                        tile
-                    )
-                        v-img(
-                            height="50px"
-                            width="50px"
-                            src="numzero.png"
-                            contain
-                        )
-                    v-text="YourProfile"
-                v-toolbar-title
-            v-col
-                v-list.d-flex(
-                    dense
-                    nav
+            template(
+                v-slot:img="{ props }"
+            )
+                v-img(
+                    v-bind="props"
                 )
-                    v-list-item
-                        n-link(to="/profile") Основная
-                    v-list-item
-                        n-link(to="/messages") Сообщения
-                    v-list-item
-                        n-link(to="/photos") Фото
-                    v-list-item
-                        n-link(to="/places") Места
-                    v-list-item
-                        n-link(to="/notes") Заметки
-                    v-list-item
-                        n-link(to="/docs") Документы
+            .logo
+                v-avatar(
+                    tile
+                )
+                    v-img(
+                        height="50px"
+                        width="50px"
+                        src="numzero.png"
+                        contain
+                    )
+            v-toolbar-title YourProfile
             v-spacer
-            v-col
-                .authorize
+            .authorize.ma-3
                     v-dialog(
                         v-if="!isAuthenticated"
                         v-model="dialog"
@@ -49,9 +37,8 @@
                             ) Авторизация
                         LogRegCard
                     v-menu(
-                        v-bind="isAuthenticated"
                         v-if="isAuthenticated"
-                        v-model="profile"
+                        v-model="isAuthenticated"
                         transition="scroll-y-transition"
                         :close-on-content-click="false"
                         right
@@ -83,6 +70,24 @@
                                     flat
                                     @click="logOut"
                                 ) Logout
+            template(
+                v-slot:extension
+            )
+                nav.header-navigation
+                    ul.v-tabs.d-flex
+                        //- template(v-for="(link, i) in navlinks")
+                        //-     v-hover v-slot:default="{ hover }"
+                        //-         li.v-tab(
+                        //-             :class="{ 'on-hover': hover }"
+                        //-         ) 
+                        //-             n-link(to='{link.href}') {{link.title}}
+
+                        li.v-tab
+                            n-link(to="/profile") Основное
+                        li.v-tab
+                            n-link(to="/photos") Фото
+                        li.v-tab
+                            n-link(to="/notes") Заметки
 </template>
 
 <script>
@@ -93,9 +98,20 @@ import { mapGetters } from 'vuex'
 export default {
     middleware: "auth",
     data: () => ({
-        dialog: false,
-        profile: false,
-        navigation: true
+        navlinks: [
+            {
+                title: "Основное",
+                href: "/profile"
+            },
+            {
+                title: "Фото",
+                href: "/photos"
+            },
+            {
+                title: "Заметки",
+                href: "/notes"
+            },
+        ]
     }),
     computed: mapGetters(['isAuthenticated', 'loggedUser']),
     methods: {
@@ -110,8 +126,8 @@ export default {
 </script>
 
 <style>
-    a {
-        color: black;
+    .v-application a {
+        color: inherit;
         text-decoration: none;
     }
 </style>
