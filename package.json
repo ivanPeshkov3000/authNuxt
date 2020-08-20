@@ -1,0 +1,36 @@
+{
+  "name": "yourprofile.io",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "nuxt --max_old_space_size=1024",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "generate": "nuxt generate",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@nuxtjs/auth": "^4.9.1",
+    "@nuxtjs/axios": "^5.12.1",
+    "@nuxtjs/component-cache": "^1.1.6",
+    "bcrypt": "^5.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.6.0",
+    "mongoose": "^5.10.0",
+    "nuxt": "^2.14.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/dotenv": "^1.4.1",
+    "@nuxtjs/pwa": "^3.0.0-beta.20",
+    "@nuxtjs/vuetify": "^1.11.2",
+    "@vue/test-utils": "^1.0.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^26.1.0",
+    "jest": "^26.1.0",
+    "node-sass": "^4.14.1",
+    "pug": "^3.0.0",
+    "pug-plain-loader": "^1.0.0",
+    "sass-loader": "^9.0.3",
+    "vue-jest": "^3.0.4"
+  }
+}
