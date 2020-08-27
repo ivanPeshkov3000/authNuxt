@@ -7,7 +7,7 @@
             v-text-field(
                 ma-3
                 label="UserName"
-                v-model="username"
+                v-model="name"
                 outlined
                 counter
                 :rules="nameValidator"
@@ -45,7 +45,7 @@ export default {
     middleware: 'auth',
     data: () => ({
         email: "",
-        username: "",
+        name: "",
         password: "",
         valid: false,
         showpass: false,
@@ -83,22 +83,23 @@ export default {
     methods: {
         async register() {
             try {
-                await this.$axios.put('/register/reg', {
-                    username: this.username,
+                this.$axios.put('/register/reg', {
+                    name: this.name,
                     email: this.email,
                     password: this.password
                 })
-                .then( async () => {
-                    await this.$auth.loginWith('local', {
+                .then( () => {
+                    return this.$auth.loginWith('local', {
                         data: {
                             email: this.email,
                             password: this.password
                         },
                     })
                 })
-                .then(
-                    this.$router.push('/')
-                )
+                .then( () => this.$router.push('/') )
+                .catch( e => {
+                    console.error(e.response.status)
+                })
 
             } catch(e) {
                 console.error(`Register error: ${e}`)

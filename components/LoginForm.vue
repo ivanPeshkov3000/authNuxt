@@ -59,11 +59,12 @@ export default {
         async userLogin(e) {
             try {
                 let response = await this.$auth.loginWith('local', { data: { email: this.email, password: this.password }})
-                response.then(() => console.log('Logged In!'))
+                response => console.log('Logged In!')
                 this.$auth.$storage.setState(key, val)
                 console.log(response)
             } catch (err) {
                 console.log(err)
+                this.$store.dispatch("errorCatch", err)
             }
         },
         validate () {

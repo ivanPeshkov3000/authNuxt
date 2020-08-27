@@ -1,6 +1,6 @@
 // import User from '~/db/models/user'
 import jwt from 'jsonwebtoken'
-import {users} from './register'
+import {readOne} from '../db'
 
 const refreshTokens = {}
 
@@ -8,14 +8,9 @@ const refreshTokens = {}
 export async function login(req, res) {
     try {
         const params = req.body
-        console.log("Login register.users: ", users)
-        const user = users  ? users.filter(v=>v.email==params.email)[0]
-                                : {
-                                     email: 'vv@mail.com',
-                                     password: 'SHpetr0v'
-                                 }
-
-        if(params.email != user.email) {
+        console.log("Logining user: ", params.email)
+        const user = await readOne('User', {email: params.email})
+        if(!user) {
             console.error("Not user")
             res.statusCode = 401
             res.end("User not found")
@@ -28,11 +23,11 @@ export async function login(req, res) {
             return
         }
         const refreshToken = Math.floor(Math.random() * (1000000000000000 - 1 + 1)) + 1
-        const accessToken = await jwt.sign({
+        const accessToken = jwt.sign({
             username: user.name,
             email: user.email,
             date: Date.now()
-        }, 'bigBrother', {
+        }, process.env.JWTsecret, {
             expiresIn: '12h'
         })
 
@@ -45,6 +40,8 @@ export async function login(req, res) {
           }
         }
 
+        res.writeHead( 200, {
+            'Cookie': JSON.stringify({accessToken, refreshToken})})
         res.end(JSON.stringify({accessToken, refreshToken}))
     } catch(e) {
         console.error(e)
@@ -66,7 +63,7 @@ export async function refresh(req, res) {
                 picture: 'https://github.com/nuxt.png',
                 email: user.email,
                 scope: ['test', 'user']
-                }, 'dummy', {
+                }, process.env.JWTsecret, {
                 expiresIn
             })
 

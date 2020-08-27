@@ -27,7 +27,6 @@
             .authorize.ma-3
                     v-dialog(
                         v-if="!isAuthenticated"
-                        v-model="dialog"
                         width="300px"
                     )
                         template(#activator="{ on, attrs }")
@@ -75,19 +74,22 @@
             )
                 nav.header-navigation
                     ul.v-tabs.d-flex
-                        //- template(v-for="(link, i) in navlinks")
-                        //-     v-hover v-slot:default="{ hover }"
-                        //-         li.v-tab(
-                        //-             :class="{ 'on-hover': hover }"
-                        //-         ) 
-                        //-             n-link(to='{link.href}') {{link.title}}
-
                         li.v-tab
                             n-link(to="/profile") Основное
                         li.v-tab
                             n-link(to="/photos") Фото
                         li.v-tab
                             n-link(to="/notes") Заметки
+        v-alert(
+            v-model="error"
+            border="left"
+            close-text="Close"
+            color="deep-purple accent-4"
+            dark
+            dismissible
+        )
+            h3.headline(v-if="error") Error {{error.code}}
+            p(v-if="error") {{error.message}}
 </template>
 
 <script>
@@ -113,7 +115,7 @@ export default {
             },
         ]
     }),
-    computed: mapGetters(['isAuthenticated', 'loggedUser']),
+    computed: mapGetters(['isAuthenticated', 'loggedUser', 'error']),
     methods: {
         async logOut() {
             await this.$auth.logout()

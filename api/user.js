@@ -2,10 +2,7 @@ import jwt from 'jsonwebtoken'
 
 export default async({req, res}) => {
     try {
-        const user = {
-            username: "Ivan",
-            email: "vv@mail.com"
-        }
+        const user = {}
         const token = req.headers.authorization
         const decoded = jwt.verify(token, 'bigBrother')
         if (!decoded) {
