@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import uniqueValidator from 'mongoose-unique-validator'
 
 const userSchema = mongoose.Schema({
     _id: {
@@ -25,5 +26,6 @@ const userSchema = mongoose.Schema({
     },
     photo: Buffer
 })
+userSchema.plugin(uniqueValidator)
 
 export default mongoose.model('User', userSchema)

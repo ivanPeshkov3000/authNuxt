@@ -81,15 +81,15 @@
                         li.v-tab
                             n-link(to="/notes") Заметки
         v-alert(
-            v-model="error"
+            v-model="message"
             border="left"
             close-text="Close"
             color="deep-purple accent-4"
             dark
             dismissible
         )
-            h3.headline(v-if="error") Error {{error.code}}
-            p(v-if="error") {{error.message}}
+            h3.headline(v-if="message") Error {{message.title}}
+            p(v-if="message") {{message.content}}
 </template>
 
 <script>

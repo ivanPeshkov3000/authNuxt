@@ -54,10 +54,11 @@ export async function readOne(entity, params) {
         let {default: Model} = await import(`./models/${entity}`)
         Model ? null : Model = mongoose.model(entity)
         
-        return await Model
-                        .findOne(params)
-                        .exec()
-
+        const instance = await Model
+            .findOne(params)
+            .exec()
+        mongoose.disconnect()
+        return instance
     } catch (e) {
         console.error(e)
         mongoose.disconnect()
@@ -72,9 +73,11 @@ export async function read(entity, params) {
         let {default: Model} = await import(`./models/${entity}`)
         Model ? null : Model = mongoose.model(entity)
         
-        return await Model
-                        .find(params)
-                        .exec()
+        const instances = await Model
+            .find(params)
+            .exec()
+        mongoose.disconnect()
+        return instance
     } catch (e) {
         console.error(e)
         mongoose.disconnect()
